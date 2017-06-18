@@ -1,9 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="col-md-12">
-        <a href="{{ path('webgroc_default_create') }}" class="btn btn-green">Create New List</a>
-    </div>
     {% if lists|length > 0 %}
         <div class="col-md-12">
 

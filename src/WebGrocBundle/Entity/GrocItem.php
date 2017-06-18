@@ -3,6 +3,7 @@
 namespace WebGrocBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * GrocItem
@@ -23,17 +24,25 @@ class GrocItem
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
      */
     private $name;
 
     /**
-     * @var string
-     *
+     * @var float
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
+     * @Assert\Range(min=0, max=99999999)
      */
     private $price;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="GrocType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     * @var GrocType $type
+     */
+    protected $type;
 
 
     /**
@@ -92,5 +101,29 @@ class GrocItem
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set type
+     *
+     * @param GrocType $type
+     *
+     * @return GrocItem
+     */
+    public function setType(GrocType $type = null)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return GrocType
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }
