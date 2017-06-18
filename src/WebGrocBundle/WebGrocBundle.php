@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle;
+namespace WebGrocBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AppBundle extends Bundle
+class WebGrocBundle extends Bundle
 {
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace WebGrocBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * GrocItem
  *
  * @ORM\Table(name="groc_item")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\GrocItemRepository")
+ * @ORM\Entity(repositoryClass="WebGrocBundle\Repository\GrocItemRepository")
  */
 class GrocItem
 {
@@ -94,4 +94,3 @@ class GrocItem
         return $this->price;
     }
 }
-
