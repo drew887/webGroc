@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace WebGrocBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * GrocItem
+ * GrocType
  *
- * @ORM\Table(name="groc_item")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\GrocItemRepository")
+ * @ORM\Table(name="groc_type")
+ * @ORM\Entity(repositoryClass="WebGrocBundle\Repository\GrocTypeRepository")
  */
-class GrocItem
+class GrocType
 {
     /**
      * @var int
@@ -28,13 +28,6 @@ class GrocItem
      */
     private $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
-     */
-    private $price;
-
 
     /**
      * Get id
@@ -51,7 +44,7 @@ class GrocItem
      *
      * @param string $name
      *
-     * @return GrocItem
+     * @return GrocType
      */
     public function setName($name)
     {
@@ -69,29 +62,4 @@ class GrocItem
     {
         return $this->name;
     }
-
-    /**
-     * Set price
-     *
-     * @param string $price
-     *
-     * @return GrocItem
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    /**
-     * Get price
-     *
-     * @return string
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
 }
-

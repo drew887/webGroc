@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="application/javascript">
+        $("#addItem").click(window.formAddify($("#items")));
+
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h2>Create New List</h2>
+    {{ form_start(form) }}
+    <div class="col-md-12">
+        <h4>Date</h4>
+        {{ form_row(form.weekDate) }}
+    </div>
+    <hr>
+    <div class="col-md-12">
+        <h3>Items
+            <button type="button" id="addItem" class="btn btn-info">
+                Add new <span class="fa fa-plus"></span>
+            </button>
+        </h3>
+        <div id="items" data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
+            {% for item in form.items %}
+                {#TODO: convert this into a datatable instead of editable fields and do js magic#}
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ item.name.vars.value }} #{{ item.vars.value.id }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(item.price) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(item.type) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-success btn-block">Submit</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
