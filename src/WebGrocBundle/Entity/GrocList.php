@@ -80,6 +80,7 @@ class GrocList
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->weekDate = new \DateTime();
     }
 
     /**

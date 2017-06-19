@@ -44,6 +44,13 @@ class GrocItem
      */
     protected $type;
 
+    /**
+     * GrocItem constructor.
+     */
+    public function __construct() {
+        $this->price = 0.0;
+    }
+
 
     /**
      * Get id

@@ -3,43 +3,105 @@
 {% block javascripts %}
     <script type="application/javascript">
         $("#addItem").click(window.formAddify($("#items")));
-
+        $(function () {
+            $(".table").DataTable({
+                responsive: false,
+                columns: [
+                    null, null, null,
+                    {'orderable': false}
+                ]
+            });
+            $("#orderModal").on('shown.bs.modal', function () {
+                console.log("Wheee");
+                $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+            }).on('click', '.addBtn', function () {
+                //TODO: put in datatable moving logic here
+            });
+        });
     </script>
 {% endblock %}
 
 {% block body %}
+    <div class="col-md-12">
+        <div id="orderModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Choose an Item</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-stripped noswrap table-responsive" id="orderItemTbl">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-4">Name</th>
+                                    <th class="col-md-4">Price</th>
+                                    <th class="col-md-3">Type</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in items %}
+                                    <tr>
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.price|localizedcurrency('CAD') }}</td>
+                                        <td>{{ item.type.name }}</td>
+                                        <td>
+                                            <button class="btn btn-info btn-small pull-right addBtn">&plus;</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <h2>Create New List</h2>
     {{ form_start(form) }}
     <div class="col-md-12">
+        <hr>
         <h4>Date</h4>
         {{ form_row(form.weekDate) }}
     </div>
     <hr>
     <div class="col-md-12">
         <h3>Items
-            <button type="button" id="addItem" class="btn btn-info">
+            <button type="button" id="addItem" class="btn btn-info" data-toggle="modal" data-target="#orderModal">
                 Add new <span class="fa fa-plus"></span>
             </button>
         </h3>
-        <div id="items" data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
-            {% for item in form.items %}
-                {#TODO: convert this into a datatable instead of editable fields and do js magic#}
-                <div class="row">
-                    <div class="col-md-4">
-                        {{ item.name.vars.value }} #{{ item.vars.value.id }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(item.price) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(item.type) }}
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+        <table class="table table-stripped nowrap" id="itemsTbl"
+               data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
+            <thead>
+                <tr>
+                    <th class="col-md-4">Name</th>
+                    <th class="col-md-4">Price</th>
+                    <th class="col-md-3">Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in form.items %}
+                    <tr>
+                        <td>{{ item.name.vars.value }}</td>
+                        <td>{{ item.price.vars.value|localizedcurrency('CAD') }}</td>
+                        <td>{{ item.type.vars.data.name }}</td>
+                        <td>
+                            <button class="btn btn-danger btn-small removeBtn">&times;</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <div class="col-md-12">
+        <hr>
         <button class="btn btn-success btn-block">Submit</button>
     </div>
-    {{ form_end(form) }}
+    {{ form_end(form, {"render_rest":false}) }}
 {% endblock %}

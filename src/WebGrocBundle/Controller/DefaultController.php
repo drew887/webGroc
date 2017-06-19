@@ -34,14 +34,14 @@ class DefaultController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createListAction(Request $request) {
-
-        $item = (new GrocItem())->setName("Test")->setPrice(12.33);
-        $list = (new GrocList())->setWeekDate(new \DateTime())->addItem($item)->addItem(clone $item);
+        $em   = $this->getDoctrine()->getManager();
+        $list = new GrocList();
 
         $form = $this->createForm(GrocListType::class, $list);
 
         return $this->render('default/createList.html.twig', [
-            'form' => $form->createView(),
+            'form'  => $form->createView(),
+            'items' => $em->getRepository('WebGrocBundle:GrocItem')->findAll(),
         ]);
     }
 
@@ -60,12 +60,22 @@ class DefaultController extends Controller {
 
     /**
      * @Route("/item/create")
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createItemAction() {
+    public function createItemAction(Request $request) {
+        $em   = $this->getDoctrine()->getManager();
         $item = new GrocItem();
 
         $form = $this->createForm(GrocItemType::class, $item);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($item);
+            $em->flush();
+
+            return $this->redirectToRoute('webgroc_default_index');
+        }
 
         return $this->render('default/createItem.html.twig', [
             'form' => $form->createView(),
