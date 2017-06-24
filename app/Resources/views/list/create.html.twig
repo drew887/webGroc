@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    {% if form.vars.data.id %}
+        <script type="application/javascript">
+            $(function () {
+                var tableConfig = {
+                        responsive: false,
+                        columns: [
+                            null, null, null,
+                            {'orderable': false, 'searchable':false}
+                        ]
+                    },
+                    itemTbl = $("#itemsTbl").DataTable(tableConfig),
+                    listTbl = $("#listItemsTbl").DataTable(tableConfig),
+                    linkUrl = "{{ path('webgroc_list_linkitem', {"list":form.vars.data.id, "item":"0"}) }}";
+
+
+                var tableSwapFunc = function (removeTbl, addTbl, method) {
+                    return function () {
+                        var button = $(this),
+                            id = button.data('itemId');
+
+                        button.prop('disabled', true);
+                        window.toggleOverlay();
+
+                        $.ajax({
+                            url: linkUrl.replace('0', id),
+                            method: method
+                        }).done(function (data, unused, xhr) {
+                            if (xhr.status < 300) {
+                                var row = removeTbl.row(button.parents('tr')),
+                                    node = row.node();
+
+                                row.remove().draw();
+                                button.toggleClass('addBtn btn-success removeBtn btn-danger');
+                                button.children('span').toggleClass('fa-remove fa-plus');
+                                addTbl.row.add(node).draw();
+                            }
+                        }).fail(function () {
+                            alert('Oh no failed to update list! Check your internet')
+                        }).always(function () {
+                            window.toggleOverlay();
+                            button.prop('disabled', false);
+                        });
+                    };
+                };
+
+                itemTbl.on('click', '.addBtn', tableSwapFunc(itemTbl, listTbl, "POST"));
+                listTbl.on('click', '.removeBtn', tableSwapFunc(listTbl, itemTbl, "DELETE"));
+
+                $("#orderModal").on('shown.bs.modal', function () {
+                    $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% if form.vars.data.id %}
+        <div class="col-md-12">
+            <div id="orderModal" class="modal fade" role="dialog" data-backdrop="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Choose an Item</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-stripped nowrap table-responsive" id="itemsTbl">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-4">Name</th>
+                                        <th class="col-md-4">Price</th>
+                                        <th class="col-md-3">Type</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.price|localizedcurrency('CAD') }}</td>
+                                            <td>{{ item.type.name }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-success btn-small pull-right addBtn"
+                                                        data-item-id="{{ item.id }}">
+                                                    <span class="fa fa-plus"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2>{{ form.vars.data.id ? "Edit List" : "Create New List" }}</h2>
+        {{ form_start(form) }}
+        <div class="col-md-12">
+            <h3>Items
+                <button type="button" id="addItem" class="btn btn-success" data-toggle="modal" data-target="#orderModal">
+                    Add new <span class="fa fa-plus"></span>
+                </button>
+            </h3>
+            <hr>
+            <table class="table table-stripped nowrap" id="listItemsTbl">
+                <thead>
+                    <tr>
+                        <th class="col-md-4">Name</th>
+                        <th class="col-md-4">Price</th>
+                        <th class="col-md-3">Type</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in form.items %}
+                        <tr>
+                            <td>{{ item.vars.data.name }}</td>
+                            <td>{{ item.vars.data.price|localizedcurrency('CAD') }}</td>
+                            <td>{{ item.vars.data.type.name }}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-small removeBtn pull-right"
+                                        data-item-id="{{ item.vars.data.id }}">
+                                    <span class="fa fa-remove"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        {{ form_start(form) }}
+        <div class="col-md-12">
+            <hr>
+            <h4>Date</h4>
+            {{ form_row(form.weekDate) }}
+        </div>
+        <hr>
+        <div class="col-md-12">
+            <hr>
+
+            <a href="{{ path("webgroc_list_list") }}" class="btn btn-danger col-sm-6">Cancel</a>
+            <button class="btn btn-success col-md-6">Submit</button>
+        </div>
+        {{ form_end(form, {"render_rest":true}) }}
+    {% endif %}
+{% endblock %}

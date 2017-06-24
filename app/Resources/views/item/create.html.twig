@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Create a New Grocery Item</h2>
+    {{ form_start(form) }}
+    <div class="col-md-6">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.price) }}
+    </div>
+    <div class="col-md-12">
+        {{ form_row(form.type) }}
+    </div>
+    <div class="col-sm-12">
+        <a href="{{ path("webgroc_item_list") }}" class="btn btn-danger col-sm-6">Cancel</a>
+        <button type="submit" class="btn btn-success col-sm-6">Submit</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="application/javascript">
+        $(function () {
+            var itemTbl = $("#itemTbl").DataTable({
+                columns: [
+                    null, null, null,
+                    {"orderable": false, "searchable": false}
+                ]
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <h2>Available Items <a href="{{ path("webgroc_item_create") }}" class="btn btn-success">Add New <span
+                        class="fa fa-plus"></span></a></h2>
+        <hr>
+        <table id="itemTbl" class="table table-stripped table-hover">
+            <thead>
+                <tr>
+                    <th class="col-md-4">Name</th>
+                    <th class="col-md-3">Price</th>
+                    <th class="col-md-3">Type</th>
+                    <th class="col-md-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.price|localizedcurrency('CAD') }}</td>
+                        <td>{{ item.type.name }}</td>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <a href="{{ path("webgroc_item_view", {"item":item.id}) }}" type="button"
+                                   class="btn btn-info">View</a>
+                                <button class="btn btn-danger"><span class="fa fa-remove"></span></button>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

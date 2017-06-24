@@ -1,13 +1,78 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}WebGroc, Online grocery list{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"#}
+        {#integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"#}
+        {#crossorigin="anonymous">#}
+
+        {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"#}
+        {#integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"#}
+        {#crossorigin="anonymous">#}
+
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/r-2.1.1/datatables.min.css"/>
+
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+        <link rel="stylesheet" href="{{ asset("css/font-awesome.min.css") }}">
+        <link rel="stylesheet" href="{{ asset("css/theme.css") }}">
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div id="overlay" class="overlay hidden text-center">
+            <span class="spinner fa fa-refresh fa-spin fa-5x"></span>
+        </div>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">WebGroc</a>
+                    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navBar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="navBar">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="{{ path('webgroc_list_list') }}" class="nav-item nav-link">Lists</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('webgroc_item_list') }}" class="nav-item nav-link">Items</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div id="mainBlock" class="container">
+            <div class="row">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/r-2.1.1/datatables.min.js"></script>
+
+        {#<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"#}
+        {#integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"#}
+        {#crossorigin="anonymous"></script>#}
+
+        {#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"#}
+        {#integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"#}
+        {#crossorigin="anonymous"></script>#}
+
+        {#<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"#}
+        {#integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"#}
+        {#crossorigin="anonymous"></script>#}
+
+        {#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"#}
+        {#integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"#}
+        {#crossorigin="anonymous"></script>#}
+
+        <script src="/js/util.js" type="application/javascript"></script>
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>
