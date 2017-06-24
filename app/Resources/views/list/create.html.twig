@@ -4,20 +4,15 @@
     {% if form.vars.data.id %}
         <script type="application/javascript">
             $(function () {
-                var itemTbl = $("#itemsTbl").DataTable({
+                var tableConfig = {
                         responsive: false,
                         columns: [
                             null, null, null,
-                            {'orderable': false}
+                            {'orderable': false, 'searchable':false}
                         ]
-                    }),
-                    listTbl = $("#listItemsTbl").DataTable({
-                        responsive: false,
-                        columns: [
-                            null, null, null,
-                            {'orderable': false}
-                        ]
-                    }),
+                    },
+                    itemTbl = $("#itemsTbl").DataTable(tableConfig),
+                    listTbl = $("#listItemsTbl").DataTable(tableConfig),
                     linkUrl = "{{ path('webgroc_list_linkitem', {"list":form.vars.data.id, "item":"0"}) }}";
 
 
@@ -91,7 +86,7 @@
                                             <td>
                                                 <button type="button" class="btn btn-info btn-small pull-right addBtn"
                                                         data-item-id="{{ item.id }}">
-                                                   <span class="fa fa-plus"></span>
+                                                    <span class="fa fa-plus"></span>
                                                 </button>
                                             </td>
                                         </tr>
@@ -133,7 +128,7 @@
                             <td>{{ item.vars.data.type.name }}</td>
                             <td>
                                 <button type="button" class="btn btn-danger btn-small removeBtn pull-right"
-                                data-item-id="{{ item.vars.data.id }}">
+                                        data-item-id="{{ item.vars.data.id }}">
                                     <span class="fa fa-remove"></span>
                                 </button>
                             </td>

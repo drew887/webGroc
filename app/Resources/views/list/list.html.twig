@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="application/javascript">
+        $(function () {
+            var listTbl = $("#listTbl").DataTable({
+                columns: [
+                    null,
+                    {'orderable':false, 'searchable':false}
+                ]
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <h3>Available Lists</h3>
+        <hr>
+        <table class="table table-stripped table-hover" id="listTbl">
+            <thead>
+                <th class="col-md-10">Week Date</th>
+                <th class="col-md-2"></th>
+            </thead>
+            <tbody>
+                {% for list in lists %}
+                    <tr>
+                        <td>{{ list.weekDate|date }}</td>
+                        <td class="btn-group">
+                            <a href="{{ path("webgroc_list_view", {"list":list.id}) }}" class="btn btn-info">View</a>
+                            <button type="button" class="btn btn-danger"><span class="fa fa-remove"></span> Remove</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

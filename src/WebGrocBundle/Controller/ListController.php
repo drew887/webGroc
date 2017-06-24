@@ -27,8 +27,8 @@ class ListController extends Controller {
     public function listAction() {
         $em = $this->getDoctrine()->getManager();
 
-        return $this->render('default/listList.html.twig', [
-            'items' => [],
+        return $this->render('list/list.html.twig', [
+            'lists' => $em->getRepository('WebGrocBundle:GrocList')->findAll(),
         ]);
     }
 
@@ -54,7 +54,7 @@ class ListController extends Controller {
             ]);
         }
 
-        return $this->render('default/createList.html.twig', [
+        return $this->render('list/create.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -77,7 +77,7 @@ class ListController extends Controller {
             $em->flush();
         }
 
-        return $this->render('default/createList.html.twig', [
+        return $this->render('list/create.html.twig', [
             'form'  => $form->createView(),
             'items' => $em->getRepository('WebGrocBundle:GrocItem')->findNewForList($list),
         ]);
