@@ -3,6 +3,14 @@
 {% block body %}
     {% if lists|length > 0 %}
         <div class="col-md-12">
+            <h2>
+                {% if weekList %}
+                    List Week's List is <a href="{{ path('webgroc_list_view', {"list":weekList.id}) }}">Here</a>
+                {% else %}
+                    There isn't a list for this week yet! Create one
+                    <a href="{{ path('webgroc_list_create') }}">here</a>
+                {% endif %}
+            </h2>
             <p>There are currently {{ lists }} lists and {{ items }} items to choose from</p>
         </div>
     {% endif %}

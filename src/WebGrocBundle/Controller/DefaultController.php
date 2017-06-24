@@ -18,9 +18,13 @@ class DefaultController extends Controller {
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
+        $weekList = $em->getRepository("WebGrocBundle:GrocList")->findForWeek();
+
+
         return $this->render('default/index.html.twig', [
-            "lists" => $em->getRepository("WebGrocBundle:GrocItem")->getCount(),
-            "items" => $em->getRepository("WebGrocBundle:GrocItem")->getCount(),
+            'weekList' => is_array($weekList) ? $weekList[0] : null,
+            "lists"    => $em->getRepository("WebGrocBundle:GrocItem")->getCount(),
+            "items"    => $em->getRepository("WebGrocBundle:GrocItem")->getCount(),
         ]);
     }
 

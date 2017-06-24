@@ -25,7 +25,7 @@ class ItemController extends Controller {
     public function listAction() {
         $em = $this->getDoctrine()->getManager();
 
-        return $this->render('list/list.html.twig', [
+        return $this->render('item/list.html.twig', [
             'items' => $em->getRepository('WebGrocBundle:GrocItem')->findAll(),
         ]);
     }

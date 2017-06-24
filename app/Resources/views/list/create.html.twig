@@ -33,7 +33,7 @@
                                     node = row.node();
 
                                 row.remove().draw();
-                                button.toggleClass('addBtn btn-info removeBtn btn-danger');
+                                button.toggleClass('addBtn btn-success removeBtn btn-danger');
                                 button.children('span').toggleClass('fa-remove fa-plus');
                                 addTbl.row.add(node).draw();
                             }
@@ -84,7 +84,7 @@
                                             <td>{{ item.price|localizedcurrency('CAD') }}</td>
                                             <td>{{ item.type.name }}</td>
                                             <td>
-                                                <button type="button" class="btn btn-info btn-small pull-right addBtn"
+                                                <button type="button" class="btn btn-success btn-small pull-right addBtn"
                                                         data-item-id="{{ item.id }}">
                                                     <span class="fa fa-plus"></span>
                                                 </button>
@@ -101,17 +101,16 @@
                 </div>
             </div>
         </div>
-        <h2>Create New List</h2>
+        <h2>{{ form.vars.data.id ? "Edit List" : "Create New List" }}</h2>
         {{ form_start(form) }}
         <div class="col-md-12">
             <h3>Items
-                <button type="button" id="addItem" class="btn btn-info" data-toggle="modal" data-target="#orderModal">
+                <button type="button" id="addItem" class="btn btn-success" data-toggle="modal" data-target="#orderModal">
                     Add new <span class="fa fa-plus"></span>
                 </button>
             </h3>
             <hr>
-            <table class="table table-stripped nowrap" id="listItemsTbl"
-                   data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
+            <table class="table table-stripped nowrap" id="listItemsTbl">
                 <thead>
                     <tr>
                         <th class="col-md-4">Name</th>
@@ -147,7 +146,9 @@
         <hr>
         <div class="col-md-12">
             <hr>
-            <button class="btn btn-success btn-block">Submit</button>
+
+            <a href="{{ path("webgroc_list_list") }}" class="btn btn-danger col-sm-6">Cancel</a>
+            <button class="btn btn-success col-md-6">Submit</button>
         </div>
         {{ form_end(form, {"render_rest":true}) }}
     {% endif %}

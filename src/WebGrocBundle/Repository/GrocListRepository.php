@@ -3,6 +3,8 @@
 namespace WebGrocBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
+use WebGrocBundle\Entity\GrocList;
 
 /**
  * GrocListRepository
@@ -18,5 +20,22 @@ class GrocListRepository extends EntityRepository {
         $qb->select('COUNT(l)');
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Finds the list for this week
+     * @return GrocList
+     */
+    public function findForWeek() {
+        $sql = "SELECT id, week_date FROM groc_list WHERE date_part('week', week_date) = date_part('week', current_date)";
+
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult('WebGrocBundle:GrocList', 'l')
+            ->addFieldResult('l', 'id', 'id')
+            ->addFieldResult('l', 'weekDate', 'week_date');
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+
+        return $query->execute();
     }
 }
