@@ -18,9 +18,13 @@
 
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
-        <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{ asset("css/font-awesome.min.css") }}">
+        <link rel="stylesheet" href="{{ asset("css/theme.css") }}">
     </head>
     <body>
+        <div id="overlay" class="overlay hidden text-center">
+            <span class="spinner fa fa-refresh fa-spin fa-5x"></span>
+        </div>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -34,12 +38,10 @@
                 <div class="collapse navbar-collapse" id="navBar">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="{{ path('webgroc_default_createlist') }}" class="nav-item nav-link">Create New
-                                List</a>
+                            <a href="{{ path('webgroc_list_list') }}" class="nav-item nav-link">Lists</a>
                         </li>
                         <li>
-                            <a href="{{ path('webgroc_default_createitem') }}" class="nav-item nav-link">Create New
-                                Item</a>
+                            <a href="{{ path('webgroc_default_createitem') }}" class="nav-item nav-link">Items</a>
                         </li>
                     </ul>
                 </div>

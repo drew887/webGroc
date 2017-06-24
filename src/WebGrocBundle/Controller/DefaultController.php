@@ -11,6 +11,10 @@ use WebGrocBundle\Entity\GrocList;
 use WebGrocBundle\Form\GrocItemType;
 use WebGrocBundle\Form\GrocListType;
 
+/**
+ * Class DefaultController
+ * @package WebGrocBundle\Controller
+ */
 class DefaultController extends Controller {
 
     /**
@@ -20,42 +24,10 @@ class DefaultController extends Controller {
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $lists = $em->getRepository("WebGrocBundle:GrocItem")->findAll();
-
         return $this->render('default/index.html.twig', [
-            "lists" => \count($lists),
+            "lists" => $em->getRepository("WebGrocBundle:GrocItem")->getCount(),
+            "items" => $em->getRepository("WebGrocBundle:GrocItem")->getCount(),
         ]);
-    }
-
-    /**
-     * @Route("/list/create")
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function createListAction(Request $request) {
-        $em   = $this->getDoctrine()->getManager();
-        $list = new GrocList();
-
-        $form = $this->createForm(GrocListType::class, $list);
-
-        return $this->render('default/createList.html.twig', [
-            'form'  => $form->createView(),
-            'items' => $em->getRepository('WebGrocBundle:GrocItem')->findAll(),
-        ]);
-    }
-
-    /**
-     * @Route("/list/{list}", requirements={"list":"\d+"})
-     * @ParamConverter("list", class="WebGrocBundle:GrocList")
-     *
-     * @param Request $request
-     * @param GrocList $list
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function viewListAction(Request $request, GrocList $list) {
-
-        return $this->render('default/viewList.html.twig', []);
     }
 
     /**
@@ -81,4 +53,5 @@ class DefaultController extends Controller {
             'form' => $form->createView(),
         ]);
     }
+
 }

@@ -9,4 +9,12 @@
         };
     };
 
+    window.toggleOverlay = function (value) {
+        if (value === null) {
+            $("#overlay").toggleClass('hidden');
+        }else {
+            $("#overlay").toggleClass('hidden', value);
+        }
+    }
+
 })();
