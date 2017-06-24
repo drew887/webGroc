@@ -23,7 +23,7 @@ class DefaultController extends Controller {
 
         return $this->render('default/index.html.twig', [
             'weekList' => is_array($weekList) ? $weekList[0] : null,
-            "lists"    => $em->getRepository("WebGrocBundle:GrocItem")->getCount(),
+            "lists"    => $em->getRepository("WebGrocBundle:GrocList")->getCount(),
             "items"    => $em->getRepository("WebGrocBundle:GrocItem")->getCount(),
         ]);
     }
