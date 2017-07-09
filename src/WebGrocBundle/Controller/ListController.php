@@ -2,7 +2,6 @@
 
 namespace WebGrocBundle\Controller;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -36,7 +35,7 @@ class ListController extends Controller {
      * @Route("/create")
      *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function createAction(Request $request) {
         $em   = $this->getDoctrine()->getManager();
@@ -65,7 +64,7 @@ class ListController extends Controller {
      *
      * @param Request $request
      * @param GrocList $list
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function viewAction(Request $request, GrocList $list) {
         $em = $this->getDoctrine()->getManager();
@@ -122,5 +121,17 @@ class ListController extends Controller {
         $em->flush();
 
         return $response;
+    }
+
+    /**
+     * @Route("/list/{list}/shop", requirements={"list":"\d+"})
+     * @ParamConverter(name="list", class="WebGrocBundle:GrocList")
+     * @param GrocList $list
+     * @return Response
+     */
+    public function shoppingAction(GrocList $list) {
+        return $this->render('list/view.html.twig', [
+            'list' => $list,
+        ]);
     }
 }

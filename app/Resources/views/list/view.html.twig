@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="application/javascript">
+        $(function () {
+            var tableConfig = {
+                    responsive: false,
+                    columns: [
+                        null, null, null,
+                        {'orderable': false, 'searchable': false}
+                    ]
+                },
+                itemTbl = $("#itemsTbl").DataTable(tableConfig),
+                cartTbl = $("#cartItemsTbl").DataTable(tableConfig);
+
+
+            var tableSwapFunc = function (removeTbl, addTbl) {
+                return function () {
+                    var button = $(this),
+                        row = removeTbl.row(button.parents('tr')),
+                        node = row.node();
+
+                    row.remove().draw();
+                    button.toggleClass('addBtn btn-success removeBtn btn-danger');
+                    button.children('span').toggleClass('fa-remove fa-plus');
+                    addTbl.row.add(node).draw();
+                };
+            };
+
+            itemTbl.on('click', '.addBtn', tableSwapFunc(itemTbl, cartTbl));
+            cartTbl.on('click', '.removeBtn', tableSwapFunc(cartTbl, itemTbl));
+
+            $("#orderModal").on('shown.bs.modal', function () {
+                $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h2>Shopping List</h2>
+    <div class="container">
+        <h3>On List
+            <div class="btn-group">
+                <a href="{{ path('webgroc_list_view', {'list':list.id}) }}" class="btn btn-success">Done</a>
+            </div>
+        </h3>
+        <table class="table table-stripped nowrap table-responsive" id="itemsTbl">
+            <thead>
+                <tr>
+                    <th class="col-md-4">Name</th>
+                    <th class="col-md-4">Price</th>
+                    <th class="col-md-3">Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in list.items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.price|localizedcurrency('CAD') }}</td>
+                        <td>{{ item.type.name }}</td>
+                        <td>
+                            <button type="button"
+                                    class="btn btn-success btn-small pull-right addBtn"
+                                    data-item-id="{{ item.id }}">
+                                <span class="fa fa-plus"></span>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>In Cart</h3>
+        <hr>
+        <table class="table table-stripped nowrap table-responsive" id="cartItemsTbl">
+            <thead>
+                <tr>
+                    <th class="col-md-4">Name</th>
+                    <th class="col-md-4">Price</th>
+                    <th class="col-md-3">Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
