@@ -46,9 +46,9 @@ class ItemController extends Controller {
             $em->persist($item);
             $em->flush();
 
-            return $this->redirectToRoute('webgroc_item_view', [
-                'item' => $item->getId(),
-            ]);
+            $this->addFlash('success', "Successfully saved {$item->getName()}");
+
+            return $this->redirectToRoute('webgroc_item_list', []);
         }
 
         return $this->render('item/create.html.twig', [
@@ -70,6 +70,10 @@ class ItemController extends Controller {
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+
+            $this->addFlash('success', "Successfully saved {$item->getName()}");
+
+            return $this->redirectToRoute('webgroc_item_list', []);
         }
 
         return $this->render('item/create.html.twig', [
