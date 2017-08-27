@@ -4,6 +4,9 @@
     <script type="application/javascript">
         $(function () {
             var listTbl = $("#listTbl").DataTable({
+                order: [
+                    ['0', 'desc']
+                ],
                 columns: [
                     null,
                     {'orderable': false, 'searchable': false}
@@ -21,14 +24,14 @@
         <table class="table table-stripped table-hover" id="listTbl">
             <thead>
                 <tr>
-                    <th class="col-md-10">Week Date</th>
-                    <th class="col-md-2"></th>
+                    <th class="col-md-8">Week Date</th>
+                    <th class="col-md-4"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for list in lists %}
                     <tr>
-                        <td>{{ list.weekDate|date }}</td>
+                        <td>{{ list.weekDate|date('Y-m-d') }} {% if loop.last %}(This week){% endif %}</td>
                         <td>
                             <div class="btn-group pull-right">
                                 <a href="{{ path("webgroc_list_view", {"list":list.id}) }}"

@@ -28,6 +28,8 @@ class Version20170618192652 extends AbstractMigration {
         $this->addSql("INSERT INTO groc_type VALUES (nextval('groc_type_id_seq'),'Frozen')");
         $this->addSql("INSERT INTO groc_type VALUES (nextval('groc_type_id_seq'),'Meat')");
         $this->addSql("INSERT INTO groc_type VALUES (nextval('groc_type_id_seq'),'Bakery')");
+        $this->addSql("INSERT INTO groc_type VALUES (nextval('groc_type_id_seq'),'Fish')");
+        $this->addSql("INSERT INTO groc_type VALUES (nextval('groc_type_id_seq'),'Deli')");
     }
 
     /**
